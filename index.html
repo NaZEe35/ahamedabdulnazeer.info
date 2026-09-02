@@ -549,14 +549,14 @@ footer { background: rgba(8, 15, 33, 0.8); border-top: 1px solid var(--border-li
       x: (Math.random() - 0.5) * W * 1.4,
       y: (Math.random() - 0.5) * H * 1.4,
       z: Math.random() * DEPTH,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
-      vz: (Math.random() - 0.5) * 0.6,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
       r: Math.random() * 2.2 + 2,
       a: Math.random() * 0.4 + 0.5
     };
   }
   for(let i = 0; i < 70; i++){ particles.push(spawnParticle()); }
+  const travelSpeed = 0.35;
 
   function project(p){
     const scale = focal / (focal + p.z);
@@ -605,9 +605,12 @@ footer { background: rgba(8, 15, 33, 0.8); border-top: 1px solid var(--border-li
       ctx.fillStyle = `rgba(251, 191, 36, ${p.a * proj.scale})`;
       ctx.fill();
 
-      p.x += p.vx; p.y += p.vy; p.z += p.vz;
-      if(p.z < 0) p.z = DEPTH;
-      if(p.z > DEPTH) p.z = 0;
+      p.x += p.vx; p.y += p.vy; p.z -= travelSpeed;
+      if(p.z <= 1){
+        p.z = DEPTH;
+        p.x = (Math.random() - 0.5) * W * 1.4;
+        p.y = (Math.random() - 0.5) * H * 1.4;
+      }
       if(p.x < -W * 0.7) p.x = W * 0.7;
       if(p.x > W * 0.7) p.x = -W * 0.7;
       if(p.y < -H * 0.7) p.y = H * 0.7;
